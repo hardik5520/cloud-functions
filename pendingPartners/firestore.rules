@@ -1,0 +1,135 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+  
+   match /blogs/{document=**}{
+    allow read: if true ;
+    allow write : if false;
+    }
+    
+  match /bookingChat/{document=**}{
+    allow read:if request.auth != null ;
+    allow create: if request.auth != null ;
+    allow update:if request.auth != null ;
+    allow delete : if false;
+    }
+    
+     match /counters/{document=**}{
+   allow read:if false ;
+     allow create: if false ;
+    allow update:if false ;
+    allow delete : if false;
+    }
+    
+      match /customerQueries/{document=**}{
+    allow read:if request.auth != null && request.auth.token.phone_number == resource.data.customerMobile;
+     allow create: if request.auth != null && request.auth.token.phone_number == request.resource.data.customerMobile;
+    allow update:if request.auth != null && request.auth.token.phone_number == resource.data.customerMobile;
+    allow delete : if false;
+    }
+    
+    match /customers/{document=**}{
+    allow read:if request.auth != null && request.auth.token.phone_number == resource.data.mobile;
+    allow create: if request.auth != null && request.auth.token.phone_number == request.resource.data.mobile;
+    allow update:if request.auth != null && request.auth.token.phone_number == resource.data.mobile;
+    allow delete : if false;
+    }
+    
+    match /contacts/{document=**}{
+    allow read:if request.auth != null;
+    allow create: if request.auth != null;
+    allow update:if request.auth != null;
+    allow delete : if false;
+    }
+    
+    match /orders/{document=**}{
+    allow read:if request.auth != null ;
+     allow create: if request.auth != null && request.auth.token.phone_number == request.resource.data.customerMobile;
+    allow update:if request.auth != null && (  ( request.auth.token.phone_number == resource.data.customerMobile) ||  ( request.auth.token.phone_number == resource.data.partnerMobile) ) ;
+    allow delete : if false;
+    }
+    
+    match /packages/{document=**}{
+    allow read: if true;
+    allow write: if false;
+    }
+    
+     match /partnerQueries/{document=**}{
+    allow read:if request.auth != null && request.auth.token.phone_number == resource.data.partnerMobile;
+     allow create: if request.auth != null && request.auth.token.phone_number == request.resource.data.partnerMobile;
+    allow update:if request.auth != null && request.auth.token.phone_number == resource.data.partnerMobile;
+    allow delete : if false;
+    }
+    
+    match /partners/{document=**}{
+    allow read:if request.auth != null;
+    allow create : if false;
+    allow update: if request.auth != null && request.auth.token.phone_number == resource.data.mobile;
+    allow delete : if false;
+    }
+    
+     match /partnerContacts/{document=**}{
+    allow read:if request.auth != null;
+    allow create: if request.auth != null;
+    allow update:if request.auth != null;
+    allow delete : if false;
+    }
+     match /partnersData/{document=**}{
+    allow read:if request.auth != null;
+    allow create : if false;
+    allow update: if false;
+    allow delete : if false;
+    }
+    
+    
+    match /pendingPartners/{document=**}{
+    allow read:if request.auth != null && request.auth.token.phone_number == resource.data.mobile;
+     allow create: if request.auth != null && request.auth.token.phone_number == request.resource.data.mobile;
+    allow update:if request.auth != null && request.auth.token.phone_number == resource.data.mobile;
+    allow delete : if false;
+    }
+     
+    
+    
+    
+      match /partnerQueries/{document=**}{
+   allow read:if request.auth != null ;
+     allow create: if request.auth != null ;
+    allow update:if request.auth != null ;
+    allow delete : if false;
+    }
+    
+      match /promoCodes/{document=**}{
+    allow read:if true ;
+     allow write : if false;
+    }
+    
+     match /rejectedPartners/{document=**}{
+    allow read:if false;
+     allow write : if false;
+    }
+    
+     match /services/{document=**}{
+    allow read:if true;
+     allow write : if false;
+    }
+    
+    
+    match /transactions/{document=**}{
+    allow read:if false;
+     allow write : if false;
+    }
+    
+    
+    match /staticData/{document=**}{
+    allow read: if true;
+    allow write: if false;
+    }
+       
+    
+    match /faq/{document=**}{
+    allow read: if true;
+    allow write: if false;
+    }
+  }
+}
